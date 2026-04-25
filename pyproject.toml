@@ -1,7 +1,7 @@
 [project]
 name = "mcp-jokes-server"
 version = "0.1.0"
-description = "Tiny remote MCP server with adult-joke and GenZ-word tools, behind HTTP Basic Auth."
+description = "Tiny remote MCP server with adult-joke and GenZ-word tools."
 requires-python = ">=3.11"
 dependencies = [
     "mcp>=1.2.0",
@@ -10,3 +10,8 @@ dependencies = [
 
 [tool.uv]
 package = false
+
+[dependency-groups]
+dev = [
+    "streamlit>=1.56.0",
+]
