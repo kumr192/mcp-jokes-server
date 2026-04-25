@@ -546,22 +546,16 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "mcp" },
-    { name = "uvicorn" },
-]
-
-[package.dev-dependencies]
-dev = [
     { name = "streamlit" },
+    { name = "uvicorn" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "mcp", specifier = ">=1.2.0" },
+    { name = "streamlit", specifier = ">=1.56.0" },
     { name = "uvicorn", specifier = ">=0.30" },
 ]
-
-[package.metadata.requires-dev]
-dev = [{ name = "streamlit", specifier = ">=1.56.0" }]
 
 [[package]]
 name = "narwhals"
