@@ -7,11 +7,15 @@ import random
 import secrets
 
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 from starlette.applications import Starlette
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 
-mcp = FastMCP("jokes-and-genz")
+mcp = FastMCP(
+    "jokes-and-genz",
+    transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=False),
+)
 
 ADULT_JOKES = [
     "I told my wife she was drawing her eyebrows too high. She looked surprised.",
