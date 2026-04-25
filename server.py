@@ -1,16 +1,11 @@
-"""Remote MCP server: adult-joke tool + GenZ-word tool, behind HTTP Basic Auth."""
+"""Remote MCP server: adult-joke tool + GenZ-word tool. No auth (public)."""
 from __future__ import annotations
 
-import base64
 import os
 import random
-import secrets
 
 from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings
-from starlette.applications import Starlette
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.responses import Response
 
 mcp = FastMCP(
     "jokes-and-genz",
@@ -73,32 +68,7 @@ def genz_word(word: str | None = None) -> dict:
     return {"word": key, "meaning": GENZ_WORDS[key]}
 
 
-class BasicAuthMiddleware(BaseHTTPMiddleware):
-    def __init__(self, app, username: str, password: str) -> None:
-        super().__init__(app)
-        token = base64.b64encode(f"{username}:{password}".encode()).decode()
-        self._expected = f"Basic {token}"
-
-    async def dispatch(self, request, call_next):
-        auth = request.headers.get("authorization", "")
-        if not secrets.compare_digest(auth, self._expected):
-            return Response(
-                "Unauthorized",
-                status_code=401,
-                headers={"WWW-Authenticate": 'Basic realm="MCP"'},
-            )
-        return await call_next(request)
-
-
-def build_app() -> Starlette:
-    username = os.environ["MCP_USERNAME"]
-    password = os.environ["MCP_PASSWORD"]
-    app = mcp.streamable_http_app()
-    app.add_middleware(BasicAuthMiddleware, username=username, password=password)
-    return app
-
-
-app = build_app()
+app = mcp.streamable_http_app()
 
 
 if __name__ == "__main__":
